@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 private Animator anim;
-private Vector3 playerOriginPos; // the transform of the playerPos GameObject;
 public float MovementSpeed = 2f;
-private Rigidbody2D PlayerRig;
+private Rigidbody2D PlayerRig, TargetRig;
+private GameObject CurrentTarget;
+
+
 public static bool CanDealDamage = false;
 
 	void Awake () {
@@ -15,23 +17,27 @@ public static bool CanDealDamage = false;
 		anim = GetComponent<Animator>();
 		PlayerRig = GetComponentInChildren<Rigidbody2D>();
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
 	{
-		MovementSpeed = MovementSpeed * Time.deltaTime;
-		transform.Translate (Vector2.right * MovementSpeed);
+
+		transform.Translate (Vector2.right * (MovementSpeed * Time.deltaTime));
 
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			anim.Play("TestSword");
 		}
 
-		if (Input.GetKeyDown(KeyCode.UpArrow)) {
+		if (Input.GetKeyDown(KeyCode.UpArrow) && transform.position.y <= -0.5) {
 			anim.Play("TestUp");
 		}
 
 		if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 			anim.Play("TestMoveLeft");
+		}
+
+		if (Input.GetKeyDown(KeyCode.DownArrow)) {
+			anim.Play("Defend");
 		}
 		
 	}
